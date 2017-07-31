@@ -2,11 +2,31 @@ var LOGOS_PATH = 'images/logos/';
 var LOGOS = [LOGOS_PATH + 'default.png', LOGOS_PATH + 'chrome.png', LOGOS_PATH + 'comdirect.png'];
 
 var db;
-var passphrase = "secret";
+var passphrase = null;
+
+var header = new Vue({
+    el: '#header',
+    data: {
+        loggedIn: false,
+        passphrase: null
+    },
+    methods: {
+        login: function () {
+            login(this.passphrase);
+            this.loggedIn = true;
+        },
+
+        logout: function () {
+            logout();
+            this.loggedIn = false;
+        }
+    }
+});
 
 var accountListContainer = new Vue({
     el: '#account_list_container',
     data: {
+        visible: false,
         accounts: loadData()
     },
     methods: {
@@ -17,19 +37,19 @@ var accountListContainer = new Vue({
 
         putTestdata: function() {
             db.accounts.add({
-                name: 'Sparkasse',
+                name: encrypt('Sparkasse'),
                 icon: 'images/logos/sparkasse.png',
-                username: 'Ivan',
-                email: '@yahoo',
-                passwort: 'xxx'
+                username: encrypt('Ivan'),
+                email: encrypt('@yahoo'),
+                passwort: encrypt('xxx')
             });
 
             db.accounts.add({
-                name: 'Comdirect',
+                name: encrypt('Comdirect'),
                 icon: 'images/logos/comdirect.png',
-                username: 'Johann',
-                email: '@gmail',
-                passwort: 'abc'
+                username: encrypt('Johann'),
+                email: encrypt('@gmail'),
+                passwort: encrypt('abc')
             });
 
             this.accounts = loadData();
@@ -52,6 +72,18 @@ var accountListContainer = new Vue({
 
         copyToClipboard: function (toCopy) {
             copyToClipboard(toCopy);
+        },
+
+        loadBackupFile: function () {
+            $('#backup_file').trigger('click');
+            var input = document.getElementById('backup_file');
+            var fr = new FileReader();
+            fr.onloadend = function (e) {
+                var lines = e.target.result;
+                var jsonSaveFile = JSON.parse(lines);
+                console.log(jsonSaveFile);
+            };
+            fr.readAsText(input.files[0]);
         }
     }
 });
@@ -59,6 +91,7 @@ var accountListContainer = new Vue({
 var accountModal = new Vue({
     el: '#account_modal',
     data: {
+        visible: false,
         mode: 'info',
         account: {icon: 'images/logos/default.png'},
         logos: LOGOS,
@@ -69,7 +102,7 @@ var accountModal = new Vue({
             try {
                 db.accounts.add({
                     name: encrypt(this.account.name),
-                    icon: encrypt(this.account.icon),
+                    icon: this.account.icon,
                     username: encrypt(this.account.username),
                     email: encrypt(this.account.email),
                     passwort: encrypt(this.account.passwort),
@@ -97,7 +130,7 @@ var accountModal = new Vue({
 
                 db.accounts.add({
                     name: encrypt(this.account.name),
-                    icon: encrypt(this.account.icon),
+                    icon: this.account.icon,
                     username: encrypt(this.account.username),
                     email: encrypt(this.account.email),
                     passwort: encrypt(this.account.passwort),
@@ -133,13 +166,26 @@ $(document).ready(function () {
 function loadData() {
     setupDatabase();
 
-    var accountList = new Array("");
-    db.accounts.each(function (account) {
-        accountList.push(account);
-    });
-    accountList.pop(0);
+    var accounts = new Array("");
+    if (passphrase != null && passphrase.length) {
+        db.accounts.each(function (account) {
+            account.name = decrypt(account.name);
+            account.username = decrypt(account.username);
+            account.email = decrypt(account.email);
+            account.passwort = decrypt(account.passwort);
+            account.pin = decrypt(account.pin);
+            account.zugangsnummer = decrypt(account.zugangsnummer);
+            account.kundennummer = decrypt(account.kundennummer);
+            account.mitgliedsnummer = decrypt(account.mitgliedsnummer);
+            account.sicherheitsfrage = decrypt(account.sicherheitsfrage);
+            account.antwort = decrypt(account.antwort);
+            account.sonstiges = decrypt(account.sonstiges);
+            accounts.push(account);
+        });
+    }
+    accounts.pop(0);
 
-    return accountList;
+    return accounts;
 }
 
 function setupDatabase() {
@@ -203,6 +249,23 @@ function setupAccountModal() {
     });
 }
 
+function login(pph) {
+    passphrase = pph;
+    accountModal.visible = true;
+    accountListContainer.visible = true;
+    accountListContainer.accounts = loadData();
+
+    setTimeout(function(){ setupTextfields(); }, 2000);
+}
+
+function logout() {
+    passphrase = null;
+    header.passphrase = null;
+    header.loggedIn = true;
+    accountListContainer.visible = false;
+    accountModal.visible = false;
+}
+
 function copyToClipboard(toCopy) {
     var $temp = $("<input>");
     $("body").append($temp);
@@ -212,11 +275,17 @@ function copyToClipboard(toCopy) {
 }
 
 function encrypt(str) {
-    // console.log(str + ' -> ' + CryptoJS.AES.encrypt(str, passphrase));
-    // return CryptoJS.AES.encrypt(str, passphrase);
-    return str;
+    if (str == null || !str.length) {
+        return null;
+    }
+
+    return CryptoJS.AES.encrypt(str, passphrase).toString();
 }
 
 function decrypt(encStr) {
-    return CryptoJS.AES.dencrypt(encStr, passphrase);
+    if (encStr == null || !encStr.length) {
+        return null;
+    }
+
+    return CryptoJS.AES.decrypt(encStr, passphrase).toString(CryptoJS.enc.Utf8);
 }

@@ -11,6 +11,21 @@ a, a:visited, a:hover {
 
 header {
   background-color: #c2f442; }
+  header .textfield {
+    padding-top: 13px;
+    float: right; }
+    header .textfield input {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      width: initial; }
+  header .btn-login, header .btn-logout {
+    height: 38px; }
+  header .btn-login {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0; }
+  header .btn-logout {
+    margin-top: 13px;
+    float: right; }
 
 .textfield {
   position: relative;
