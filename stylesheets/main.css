@@ -1,0 +1,117 @@
+html {
+  height: 100%; }
+
+body, ul, label {
+  margin: 0;
+  padding: 0; }
+
+a, a:visited, a:hover {
+  text-decoration: none;
+  cursor: default; }
+
+header {
+  background-color: #c2f442; }
+
+.textfield {
+  position: relative;
+  color: #4c4c4c; }
+  .textfield label {
+    position: absolute;
+    z-index: 10;
+    margin-left: 11px;
+    line-height: 40px;
+    transition: all ease .5s;
+    -webkit-transition: all ease .5s; }
+  .textfield label.active {
+    margin-top: 4px;
+    font-size: 10px;
+    line-height: 10px;
+    color: #a09d9d; }
+  .textfield input, .textfield textarea {
+    z-index: 1;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    padding: 16px 10px 4px 10px;
+    font-size: 14px;
+    line-height: 14px;
+    outline: none; }
+  .textfield input {
+    width: calc(100% - 38px);
+    vertical-align: middle; }
+  .textfield textarea {
+    width: 100%; }
+  .textfield img {
+    cursor: copy; }
+
+.dropdown-icons .dropdown-menu {
+  margin: 0;
+  padding: 0;
+  top: 82px;
+  left: 131px;
+  min-width: 66px;
+  max-width: 66px; }
+  .dropdown-icons .dropdown-menu li a {
+    padding: 0;
+    margin: 0;
+    cursor: pointer; }
+    .dropdown-icons .dropdown-menu li a img {
+      margin: 0 auto;
+      padding: 5px;
+      width: 45px;
+      height: 45px;
+      display: block; }
+
+.modal .modal-header {
+  background-color: #66bc43; }
+.modal .modal-body {
+  height: auto;
+  min-height: 300px;
+  overflow: auto; }
+  @media screen and (min-width: 768px) {
+    .modal .modal-body {
+      min-height: 400px; } }
+  .modal .modal-body .container {
+    padding: 0;
+    width: 100%; }
+  .modal .modal-body .textfield {
+    margin-top: 10px; }
+.modal .modal-footer .btn-success, .modal .modal-footer .btn-warning {
+  float: left; }
+
+#account_list_container {
+  margin-top: 10px; }
+
+#add_account_container {
+  padding: 5px; }
+  #add_account_container a {
+    cursor: pointer; }
+
+ul.account-list {
+  margin-top: 20px;
+  list-style: none; }
+  ul.account-list li {
+    border-bottom: 1px solid lightgrey;
+    padding: 5px;
+    cursor: default; }
+    ul.account-list li:hover {
+      background-color: #eff1f4; }
+    ul.account-list li img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px; }
+    ul.account-list li .buttonbar {
+      margin-top: 9px;
+      float: right; }
+      ul.account-list li .buttonbar a {
+        cursor: copy; }
+        ul.account-list li .buttonbar a:last-child {
+          cursor: pointer; }
+        ul.account-list li .buttonbar a img {
+          margin-left: 10px;
+          width: 20px;
+          height: 20px; }
+          @media screen and (min-width: 768px) {
+            ul.account-list li .buttonbar a img {
+              margin-left: 10px; } }
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+<!--<html lang="de" manife_cache.appcacheache">-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PasswordManager</title>
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/main.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="row">
+            <a><img src="images/logo.png" width="64" height="64"></a>
+        </div>
+    </div>
+</header>
+
+<div class="container" id="account_list_container">
+    <div class="row">
+        <h2>Meine Accounts:</h2>
+        <input type="file">
+    </div>
+
+    <div class="row" id="add_account_container">
+        <a data-toggle="modal" data-target="#account_modal" v-on:click="createAccount()">
+            <img src="images/plus.png" width="40" height="40"> Account erstellen
+        </a>
+        <button v-on:click="clearDatabase()">clear</button>
+        <button v-on:click="putTestdata()">put testdata</button>
+    </div>
+
+    <div class="row" v-if="accounts.length > 0">
+        <ul class="account-list">
+            <li v-for="account in accounts" v-on:click="showAccountInfo('info', account)">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-9 col-md-10" data-toggle="modal" data-target="#account_modal">
+                        <span class="account-name"><img v-bind:src="account.icon">{{ account.name }}</span>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-3 col-md-2">
+                        <span class="buttonbar">
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Benutzername kopieren" v-on:click="copyToClipboard(account.username)"><img src="images/user.png"></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Passwort kopieren" v-on:click="copyToClipboard(account.passwort)"><img src="images/copy_password.png"></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Account löschen"><img src="images/delete.png" v-on:click="deleteAccount(account)"></a>
+                        </span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<footer>
+
+</footer>
+
+
+<!--------------------------------------------------- MODALS ---------------------------------------------------------->
+<!-- New Account -->
+<div id="account_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Account erstellen</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="dropdown dropdown-icons">
+                                <img id="account_icon" v-bind:src="account.icon" width="128" height="128">
+                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                    Icon <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li v-for="logo in logos"><a href="#"><img v-bind:src="logo"></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="textfield">
+                                <label for="tf_name" v-bind:class="account.name != null ? 'active' : ''">Bezeichnung</label>
+                                <input id="tf_name" type="text" spellcheck="false" v-model="account.name"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.name)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="textfield">
+                                <label for="tf_username" v-bind:class="account.username != null ? 'active' : ''">Benutzername</label>
+                                <input id="tf_username" type="text" v-model="account.username"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.username)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="textfield">
+                                <label for="tf_email" v-bind:class="account.email != null ? 'active' : ''">E-Mail</label>
+                                <input id="tf_email" type="email" v-model="account.email"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.email)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="textfield">
+                                <label for="tf_passwort" v-bind:class="account.passwort != null ? 'active' : ''">Passwort</label>
+                                <input id="tf_passwort" type="password" v-model="account.passwort"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.passwort)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="textfield">
+                                <label for="tf_pin" v-bind:class="account.pin != null ? 'active' : ''">PIN</label>
+                                <input id="tf_pin" type="password" v-model="account.pin"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.pin)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="textfield">
+                                <label for="tf_zugangsnummer" v-bind:class="account.zugangsnummer != null ? 'active' : ''">Zugangsnummer</label>
+                                <input id="tf_zugangsnummer" type="text" v-model="account.zugangsnummer"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.zugangsnummer)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="textfield">
+                                <label for="tf_kundennummer" v-bind:class="account.kundennummer != null ? 'active' : ''">Kundennummer</label>
+                                <input id="tf_kundennummer" type="text" v-model="account.kundennummer"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.kundennummer)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="textfield">
+                                <label for="tf_mitgliedsnummer" v-bind:class="account.mitgliedsnummer != null ? 'active' : ''">Mitgliedsnummer</label>
+                                <input id="tf_mitgliedsnummer" type="text" v-model="account.mitgliedsnummer"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.mitgliedsnummer)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="textfield">
+                                <label for="tf_sicherheitsfrage" v-bind:class="account.sicherheitsfrage != null ? 'active' : ''">Sicherheitsfrage</label>
+                                <input id="tf_sicherheitsfrage" type="text" v-model="account.sicherheitsfrage"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.sicherheitsfrage)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="textfield">
+                                <label for="tf_antwort" v-bind:class="account.antwort != null ? 'active' : ''">Antwort</label>
+                                <input id="tf_antwort" type="text" v-model="account.antwort"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.antwort)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="textfield">
+                                <label for="tf_sonstiges" v-bind:class="account.sonstiges != null ? 'active' : ''">Sonstiges</label>
+                                <textarea id="tf_sonstiges" type="text" rows="4" v-model="account.sonstiges"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" v-if="mode == 'create'" v-on:click="createAccount()">erstellen</button>
+                <button type="button" class="btn btn-warning"v-if="mode == 'edit' || mode == 'info'" v-on:click="editAccount()">aktualisieren</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_close_modal">abbrechnen</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="js/jquery-3.2.1.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/crypto-js.js"></script>
+<script src="js/dexie.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

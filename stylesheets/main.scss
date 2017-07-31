@@ -1,0 +1,200 @@
+// ####################### CONSTANTS #######################
+$default-color: #4c4c4c;
+// #########################################################
+
+// ######################## MIXINS #########################
+@mixin break-at($point) {
+  @if $point == m {
+    @media screen and (min-width: 768px) {
+      @content;
+    }
+  } @else if $point == l {
+    @media screen and (min-width: 1024px) {
+      @content;
+    }
+  } @else {
+    @error "Illegal breakpoint name #{$point}";
+  }
+}
+
+// #########################################################
+
+html {
+  height: 100%;
+}
+
+body, ul, label {
+  margin: 0;
+  padding: 0;
+}
+
+a, a:visited, a:hover {
+  text-decoration: none;
+  cursor: default;
+}
+
+header {
+  background-color: #c2f442;
+}
+
+// ######################## CLASSES #########################
+
+.textfield {
+  position: relative;
+  color: $default-color;
+
+  label {
+    position: absolute;
+    z-index: 10;
+    margin-left: 11px;
+    line-height: 40px;
+    transition: all ease .5s;
+    -webkit-transition: all ease .5s;
+  }
+
+  label.active {
+    margin-top: 4px;
+    font-size: 10px;
+    line-height: 10px;
+    color: #a09d9d;
+  }
+
+  input, textarea {
+    z-index: 1;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    padding: 16px 10px 4px 10px;
+    font-size: 14px;
+    line-height: 14px;
+    outline: none;
+  }
+
+  input {
+    width: calc(100% - 38px);
+    vertical-align: middle;
+  }
+
+  textarea {
+    width: 100%;
+  }
+
+  img {
+    cursor: copy;
+  }
+}
+
+.dropdown-icons {
+  .dropdown-menu {
+    margin: 0;
+    padding: 0;
+    top: 82px;
+    left: 131px;
+    min-width: 66px;
+    max-width: 66px;
+
+    li {
+      a {
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+
+        img {
+          margin: 0 auto;
+          padding: 5px;
+          width: 45px;
+          height: 45px;
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.modal {
+  .modal-header {
+    background-color: #66bc43;
+  }
+
+  .modal-body {
+    height: auto;
+    min-height: 300px;
+    overflow: auto;
+
+    @include break-at(m) {
+      min-height: 400px;
+    }
+
+    .container {
+      padding: 0;
+      width: 100%;
+    }
+
+    .textfield {
+      margin-top: 10px;
+    }
+  }
+
+  .modal-footer {
+    .btn-success, .btn-warning {
+      float: left;
+    }
+  }
+}
+
+// ##########################################################
+
+#account_list_container {
+  margin-top: 10px;
+}
+
+#add_account_container {
+  padding: 5px;
+
+  a {
+    cursor: pointer;
+  }
+}
+
+ul.account-list {
+  margin-top: 20px;
+  list-style: none;
+
+  li {
+    border-bottom: 1px solid lightgrey;
+    padding: 5px;
+    cursor: default;
+
+    &:hover {
+      background-color: #eff1f4;
+    }
+
+    img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .buttonbar {
+      margin-top: 9px;
+      float: right;
+
+      a {
+        cursor: copy;
+
+        &:last-child {
+          cursor: pointer;
+        }
+
+        img {
+          margin-left: 10px;
+          width: 20px;
+          height: 20px;
+
+          @include break-at(m) {
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+}

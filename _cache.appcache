@@ -1,0 +1,45 @@
+CACHE MANIFEST
+# This is a comment.
+# Cache manifest version 0.0.1
+# If you change the version number in this comment,
+# the cache manifest is no longer byte-for-byte
+# identical.
+
+# HTML
+index.html
+
+# JavaScript
+js/bootstrap.min.js
+js/dexie.js
+js/jquery-3.2.1.js
+js/main.js
+
+# CSS
+stylesheets/bootstrap.min.css
+stylesheets/bootstrap.min.css.map
+stylesheets/bootstrap-theme.min.css
+stylesheets/bootstrap-theme.min.css.map
+stylesheets/main.css
+
+# Files
+images/logo.png
+images/copy_password.png
+images/delete.png
+images/edit.png
+images/plus.png
+images/logos/comdirect.png
+images/logos/sparkasse.png
+images/logos/yahoo.png
+
+NETWORK:
+# All URLs that start with the following lines
+# are whitelisted.
+# http://example.com/examplepath/
+# http://www.example.org/otherexamplepath/
+
+CACHE:
+# Additional items to cache.
+# demoimages/stonessmall.jpg
+
+FALLBACK:
+# demoimages/currentImg.jpg images/stockImage.jpg
