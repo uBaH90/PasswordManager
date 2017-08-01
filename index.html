@@ -39,10 +39,37 @@
 
     <div class="row" id="backup_container">
         <div class="col-xs-12">
-            <button class="btn btn-warning btn-block" v-on:click="loadBackupFile()">
-                <span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Laden
-            </button>
-            <input class="invisible" id="backup_file" type="file" onchange="">
+            <div class="row">
+                <div class="col-xs-6 col-sm-3">
+                    <button class="btn btn-warning btn-block" v-on:click="openFileChooser()">
+                        <span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Laden
+                    </button>
+                    <input class="_hidden-always" id="backup_file" type="file" v-on:change="applyBackupFile()">
+                </div>
+
+                <div class="col-xs-6 col-sm-3" v-if="accounts != null && accounts.length">
+                    <button class="btn btn-info btn-block" v-on:click="createBackupFile()">
+                        <span class="glyphicon glyphicon-floppy-save"></span> Speichern
+                    </button>
+                    <a class="btn btn-info _hidden-always" id="download_backup_file" download="datei.json"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="alert-container">
+                        <div class="alert alert-success alert-dismissable _hidden">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            Die Datei wurde erfolgreich geladen.
+                        </div>
+
+                        <div class="alert alert-danger alert-dismissable _hidden">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Fehler!</strong> Die Datei ist ungültig oder leer.
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

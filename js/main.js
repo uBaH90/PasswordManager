@@ -30,12 +30,12 @@ var accountListContainer = new Vue({
         accounts: loadData()
     },
     methods: {
-        clearDatabase: function() {
+        clearDatabase: function () {
             db.accounts.clear();
             this.accounts = loadData();
         },
 
-        putTestdata: function() {
+        putTestdata: function () {
             db.accounts.add({
                 name: encrypt('Sparkasse'),
                 icon: 'images/logos/sparkasse.png',
@@ -74,16 +74,70 @@ var accountListContainer = new Vue({
             copyToClipboard(toCopy);
         },
 
-        loadBackupFile: function () {
+        openFileChooser: function () {
+            if (typeof window.FileReader !== 'function') {
+                alert("The file API isn't supported on this browser yet.");
+                return;
+            }
+
             $('#backup_file').trigger('click');
+        },
+
+        applyBackupFile: function () {
             var input = document.getElementById('backup_file');
             var fr = new FileReader();
             fr.onloadend = function (e) {
-                var lines = e.target.result;
-                var jsonSaveFile = JSON.parse(lines);
-                console.log(jsonSaveFile);
+                try {
+                    var lines = e.target.result;
+                    var jsonSaveFile = JSON.parse(lines);
+                    if (jsonSaveFile.accounts == null || !jsonSaveFile.accounts.length) {
+                        $('#backup_container').find('.alert-danger').show();
+                        return;
+                    }
+
+                    for(account of jsonSaveFile.accounts) {
+                        console.log(account);
+                    }
+
+                    console.log($('#backup_container').find('.alert-success'));
+                    $('#backup_container').find('.alert-success').show();
+
+                } catch (e) {
+                    $('#backup_container').find('.alert-danger').show();
+                    console.log('ERROR at loading the backup: ' + e);
+                }
             };
             fr.readAsText(input.files[0]);
+        },
+
+        createBackupFile: function () {
+            var jsonString;
+            var downloadlink = $('#download_backup_file');
+
+            var data = {};
+            data.accounts = new Array();
+            for (account of this.accounts) {
+                var newAccount = {};
+                newAccount.name = encrypt(account.name);
+                newAccount.icon = account.icon;
+                newAccount.username = encrypt(account.username);
+                newAccount.email = encrypt(account.email);
+                newAccount.passwort = encrypt(account.passwort);
+                newAccount.pin = encrypt(account.pin);
+                newAccount.zugangsnummer = encrypt(account.zugangsnummer);
+                newAccount.kundennummer = encrypt(account.kundennummer);
+                newAccount.mitgliedsnummer = encrypt(account.mitgliedsnummer);
+                newAccount.sicherheitsfrage = encrypt(account.sicherheitsfrage);
+                newAccount.antwort = encrypt(account.antwort);
+                newAccount.sonstiges = encrypt(account.sonstiges);
+
+                data.accounts.push(newAccount);
+            }
+            jsonString = JSON.stringify(data, null, 2);
+
+            var jsonFile = new Blob([jsonString], {type: 'application/json'});
+            downloadlink.attr("href", window.URL.createObjectURL(jsonFile));
+            downloadlink[0].click();
         }
     }
 });

@@ -166,8 +166,25 @@ header {
   }
 }
 
+.invisible {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+._hidden {
+  display: none;
+}
+
+._hidden-always {
+  display: none !important;
+}
+
+.alert-container {
+  padding-top: 10px;
+}
 
 // ##########################################################
+
 
 #account_list_container {
   margin-top: 10px;
