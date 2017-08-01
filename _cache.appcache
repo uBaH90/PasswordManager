@@ -11,6 +11,8 @@ index.html
 # JavaScript
 js/bootstrap.min.js
 js/dexie.js
+js/vue.js
+js/crypto-js.js
 js/jquery-3.2.1.js
 js/main.js
 
@@ -24,11 +26,21 @@ stylesheets/main.css
 # Files
 images/logo.png
 images/copy_password.png
+images/clipboard.png
 images/delete.png
 images/edit.png
 images/plus.png
+images/user.png
 images/logos/comdirect.png
+images/logos/chrome.png
+images/logos/default.png
+images/logos/facebook.png
+images/logos/google.png
+images/logos/google_plus.png
+images/logos/linkedin.png
+images/logos/skype.png
 images/logos/sparkasse.png
+images/logos/twitter.png
 images/logos/yahoo.png
 
 NETWORK:

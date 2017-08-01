@@ -1,5 +1,7 @@
 var LOGOS_PATH = 'images/logos/';
-var LOGOS = [LOGOS_PATH + 'default.png', LOGOS_PATH + 'chrome.png', LOGOS_PATH + 'comdirect.png'];
+var LOGOS = [LOGOS_PATH + 'default.png', LOGOS_PATH + 'chrome.png', LOGOS_PATH + 'comdirect.png', LOGOS_PATH + 'facebook.png',
+    LOGOS_PATH + 'google.png', LOGOS_PATH + 'google_plus.png', LOGOS_PATH + 'linkedin.png', LOGOS_PATH + 'skype.png',
+    LOGOS_PATH + 'sparkasse.png', LOGOS_PATH + 'twitter.png', LOGOS_PATH + 'whatsapp.png', LOGOS_PATH + 'yahoo.png'];
 
 var db;
 var passphrase = null;
@@ -95,16 +97,15 @@ var accountListContainer = new Vue({
                         return;
                     }
 
-                    for(account of jsonSaveFile.accounts) {
-                        console.log(account);
-                    }
+                    this.clearDatabase;
+                    storeData(jsonSaveFile.accounts);
+                    this.accounts = loadData();
 
-                    console.log($('#backup_container').find('.alert-success'));
                     $('#backup_container').find('.alert-success').show();
 
                 } catch (e) {
                     $('#backup_container').find('.alert-danger').show();
-                    console.log('ERROR at loading the backup: ' + e);
+                    console.log('ERROR at loading the backup file: ' + e);
                 }
             };
             fr.readAsText(input.files[0]);
@@ -113,6 +114,7 @@ var accountListContainer = new Vue({
         createBackupFile: function () {
             var jsonString;
             var downloadlink = $('#download_backup_file');
+            var date = new Date();
 
             var data = {};
             data.accounts = new Array();
@@ -136,7 +138,8 @@ var accountListContainer = new Vue({
             jsonString = JSON.stringify(data, null, 2);
 
             var jsonFile = new Blob([jsonString], {type: 'application/json'});
-            downloadlink.attr("href", window.URL.createObjectURL(jsonFile));
+            downloadlink.attr('href', window.URL.createObjectURL(jsonFile));
+            downloadlink.attr('download', 'PasswordManager-' + new Date().toJSON().slice(0,10) + '.json');
             downloadlink[0].click();
         }
     }
@@ -240,6 +243,25 @@ function loadData() {
     accounts.pop(0);
 
     return accounts;
+}
+
+function storeData(accounts) {
+    for (account of accounts) {
+        db.accounts.add({
+            name: account.name,
+            icon: account.icon,
+            username: account.username,
+            email: account.email,
+            passwort: account.passwort,
+            pin: account.pin,
+            zugangsnummer: account.zugangsnummer,
+            kundennummer: account.kundennummer,
+            mitgliedsnummer: account.mitgliedsnummer,
+            sicherheitsfrage: account.sicherheitsfrage,
+            antwort: account.antwort,
+            sonstiges: account.sonstiges
+        });
+    }
 }
 
 function setupDatabase() {
