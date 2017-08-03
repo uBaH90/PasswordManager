@@ -1,7 +1,17 @@
 var LOGOS_PATH = 'images/logos/';
-var LOGOS = [LOGOS_PATH + 'default.png', LOGOS_PATH + 'chrome.png', LOGOS_PATH + 'comdirect.png', LOGOS_PATH + 'facebook.png',
-    LOGOS_PATH + 'google.png', LOGOS_PATH + 'google_plus.png', LOGOS_PATH + 'linkedin.png', LOGOS_PATH + 'skype.png',
-    LOGOS_PATH + 'sparkasse.png', LOGOS_PATH + 'twitter.png', LOGOS_PATH + 'whatsapp.png', LOGOS_PATH + 'yahoo.png'];
+var LOGOS = [LOGOS_PATH + 'default.png', LOGOS_PATH + 'sparkasse.png', LOGOS_PATH + 'comdirect.png', LOGOS_PATH + 'chrome.png',
+        LOGOS_PATH + 'google.png', LOGOS_PATH + 'google_plus.png', LOGOS_PATH + 'yahoo.png', LOGOS_PATH + 'mail_ru.png', LOGOS_PATH + 'skype.png', LOGOS_PATH + 'whatsapp.png',
+        LOGOS_PATH + 'facebook.png', LOGOS_PATH + 'twitter.png', LOGOS_PATH + 'linkedin.png', LOGOS_PATH + 'instagram.png', LOGOS_PATH + 'ok.png', LOGOS_PATH + 'vk.png',
+        LOGOS_PATH + 'android.png', LOGOS_PATH + 'apple.png', LOGOS_PATH + 'bonprix.png', LOGOS_PATH + 'cinemaxx.png',
+        LOGOS_PATH + 'cinedom.png', LOGOS_PATH + 'db.png', LOGOS_PATH + 'ebay.png', LOGOS_PATH + 'gog.png',
+        LOGOS_PATH + 'jetbrains.png', LOGOS_PATH + 'kvb.png', LOGOS_PATH + 'mmoga.png', LOGOS_PATH + 'microsoft.png',
+        LOGOS_PATH + 'windows_blue.png', LOGOS_PATH + 'windows_black.png', LOGOS_PATH + 'outlook.png',
+        LOGOS_PATH + 'anonymous.png', LOGOS_PATH + 'anonymous_mask.png', LOGOS_PATH + 'netcologne.png',
+        LOGOS_PATH + 'netflix.png', LOGOS_PATH + 'sky_go.png', LOGOS_PATH + 'oracle.png', LOGOS_PATH + 'origin.png', LOGOS_PATH + 'otto.png',
+        LOGOS_PATH + 'playstation.png', LOGOS_PATH + 'xbox.png', LOGOS_PATH + 'paypal.png', LOGOS_PATH + 'github.png',
+        LOGOS_PATH + 'samsung.png', LOGOS_PATH + 'steam.png', LOGOS_PATH + 'ubisoft.png', LOGOS_PATH + 'eprimo.png',
+        LOGOS_PATH + 'rebuy.png', LOGOS_PATH + 'shareonline.png', LOGOS_PATH + 'uploaded.png',
+        LOGOS_PATH + 'video2brain.png', LOGOS_PATH + 'coin.png'];
 
 var db;
 var passphrase = null;
@@ -157,6 +167,7 @@ var accountModal = new Vue({
     methods: {
         createAccount: function () {
             try {
+                // store new account in db
                 db.accounts.add({
                     name: encrypt(this.account.name),
                     icon: this.account.icon,
@@ -172,6 +183,21 @@ var accountModal = new Vue({
                     sonstiges: encrypt(this.account.sonstiges)
                 });
 
+                // reset
+                this.account.name = null;
+                this.account.icon = 'images/logos/default.png';
+                this.account.username = null;
+                this.account.email = null;
+                this.account.passwort = null;
+                this.account.pin = null;
+                this.account.zugangsnummer = null;
+                this.account.kundennummer = null;
+                this.account.mitgliedsnummer = null;
+                this.account.sicherheitsfrage = null;
+                this.account.antwort = null;
+                this.account.sonstiges = null;
+
+                // refresh account list
                 accountListContainer.accounts = loadData();
                 $("#btn_close_modal").click();
             } catch (e) {
@@ -183,7 +209,7 @@ var accountModal = new Vue({
         editAccount: function () {
             this.mode = 'edit';
             try {
-                db.accounts.where("name").anyOf(this.account.name).delete();
+                db.accounts.where("id").equals(this.account.id).delete();
 
                 db.accounts.add({
                     name: encrypt(this.account.name),
@@ -226,6 +252,7 @@ function loadData() {
     var accounts = new Array("");
     if (passphrase != null && passphrase.length) {
         db.accounts.each(function (account) {
+            account.id = account.id;
             account.name = decrypt(account.name);
             account.username = decrypt(account.username);
             account.email = decrypt(account.email);
@@ -241,6 +268,14 @@ function loadData() {
         });
     }
     accounts.pop(0);
+    accounts.sort(function(a, b) {
+        console.log('in sort');
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    });
+
+    for (account of accounts) {
+        console.log(account.name);
+    }
 
     return accounts;
 }
@@ -269,12 +304,12 @@ function setupDatabase() {
 
     // Define a schema
     db.version(1).stores({
-        accounts: 'name, icon, username, email, passwort, pin, zugangsnummer, kundennummer, mitgliedsnummer, sicherheitsfrage, antwort, sonstiges'
+        accounts: '++id, name, icon, username, email, passwort, pin, zugangsnummer, kundennummer, mitgliedsnummer, sicherheitsfrage, antwort, sonstiges'
     });
 
     // Open the database
     db.open().catch(function (error) {
-        console.log('ERROR: ' + error);
+        console.log('ERROR at opening database: ' + error);
     });
 }
 

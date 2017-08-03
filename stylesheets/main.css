@@ -17,7 +17,7 @@ header {
     header .textfield input {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
-      width: initial; }
+      width: 155px; }
   header .btn-login, header .btn-logout {
     height: 38px; }
   header .btn-login {
@@ -64,7 +64,9 @@ header {
   top: 82px;
   left: 131px;
   min-width: 66px;
-  max-width: 66px; }
+  max-width: 66px;
+  height: 633px;
+  overflow: auto; }
   .dropdown-icons .dropdown-menu li a {
     padding: 0;
     margin: 0;

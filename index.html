@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="de">
-<!--<html lang="de" manife_cache.appcacheache">-->
+<html lang="de" manifest="cache.appcache">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PasswordManager</title>
+    <link rel="icon" type="image/png" href="images/logo.png" sizes="32x32">
     <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
     <link href="stylesheets/main.css" rel="stylesheet">
 </head>
@@ -78,8 +78,8 @@
             <a data-toggle="modal" data-target="#account_modal" v-on:click="createAccount()">
                 <img src="images/plus.png" width="40" height="40"> Account erstellen
             </a>
-            <button v-on:click="clearDatabase()">clear</button>
-            <button v-on:click="putTestdata()">put testdata</button>
+            <!--<button v-on:click="clearDatabase()">clear</button>-->
+            <!--<button v-on:click="putTestdata()">put testdata</button>-->
         </div>
     </div>
 
@@ -89,7 +89,7 @@
                 <li v-for="account in accounts" v-on:click="showAccountInfo('info', account)">
                     <div class="row">
                         <div class="col-xs-6 col-sm-9 col-md-10" data-toggle="modal" data-target="#account_modal">
-                            <span class="account-name"><img v-bind:src="account.icon">{{ account.name }}</span>
+                            <span class="account-name"><img v-bind:src="account.icon"><strong>{{ account.name }}</strong></span>
                         </div>
 
                         <div class="col-xs-6 col-sm-3 col-md-2">
@@ -222,7 +222,7 @@
                         <div class="col-xs-12">
                             <div class="textfield">
                                 <label for="tf_antwort" v-bind:class="account.antwort != null ? 'active' : ''">Antwort</label>
-                                <input id="tf_antwort" type="text" v-model="account.antwort"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.antwort)">
+                                <input id="tf_antwort" type="password" v-model="account.antwort"><img src="images/clipboard.png" width="38" height="38" v-on:click="copyToClipboard(account.antwort)">
                             </div>
                         </div>
                     </div>

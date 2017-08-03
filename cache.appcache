@@ -1,0 +1,106 @@
+CACHE MANIFEST
+# This is a comment.
+# Cache manifest version 0.1.0
+# If you change the version number in this comment,
+# the cache manifest is no longer byte-for-byte
+# identical.
+
+# HTML
+index.html
+favicon.ico
+
+# JavaScript
+js/bootstrap.min.js
+js/dexie.js
+js/vue.js
+js/crypto-js.js
+js/jquery-3.2.1.js
+js/main.js
+
+# CSS
+stylesheets/bootstrap.min.css
+stylesheets/bootstrap.min.css.map
+stylesheets/bootstrap-theme.min.css
+stylesheets/bootstrap-theme.min.css.map
+stylesheets/main.css
+
+# Fonts
+fonts/glyphicons-halflings-regular.eot
+fonts/glyphicons-halflings-regular.svg
+fonts/glyphicons-halflings-regular.ttf
+fonts/glyphicons-halflings-regular.woff
+fonts/glyphicons-halflings-regular.woff2
+
+# Files
+images/logo.png
+images/copy_password.png
+images/clipboard.png
+images/delete.png
+images/edit.png
+images/plus.png
+images/user.png
+images/logos/android.png
+images/logos/anonymous.png
+images/logos/anonymous_mask.png
+images/logos/apple.png
+images/logos/bonprix.png
+images/logos/cinedom.png
+images/logos/cinemaxx.png
+images/logos/coin.png
+images/logos/comdirect.png
+images/logos/chrome.png
+images/logos/db.png
+images/logos/default.png
+images/logos/ebay.png
+images/logos/eprimo.png
+images/logos/facebook.png
+images/logos/github.png
+images/logos/gog.png
+images/logos/google.png
+images/logos/google_plus.png
+images/logos/instagram.png
+images/logos/jetbrains.png
+images/logos/kvb.png
+images/logos/linkedin.png
+images/logos/mail_ru.png
+images/logos/microsoft.png
+images/logos/mmoga.png
+images/logos/netcologne.png
+images/logos/netflix.png
+images/logos/ok.png
+images/logos/oracle.png
+images/logos/origin.png
+images/logos/otto.png
+images/logos/outlook.png
+images/logos/paypal.png
+images/logos/playstation.png
+images/logos/rebuy.png
+images/logos/samsung.png
+images/logos/shareonline.png
+images/logos/sky_go.png
+images/logos/skype.png
+images/logos/sparkasse.png
+images/logos/steam.png
+images/logos/twitter.png
+images/logos/ubisoft.png
+images/logos/uploaded.png
+images/logos/video2brain.png
+images/logos/vk.png
+images/logos/windows_blue.png
+images/logos/windows_black.png
+images/logos/whatsapp.png
+images/logos/xbox.png
+images/logos/yahoo.png
+
+NETWORK:
+# All URLs that start with the following lines
+# are whitelisted.
+# http://example.com/examplepath/
+# http://www.example.org/otherexamplepath/
+
+CACHE:
+# Additional items to cache.
+# demoimages/stonessmall.jpg
+
+FALLBACK:
+# demoimages/currentImg.jpg images/stockImage.jpg
