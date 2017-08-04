@@ -68,7 +68,7 @@ var accountListContainer = new Vue({
         },
 
         deleteAccount: function (account) {
-            db.accounts.where("name").anyOf(account.name).delete();
+            db.accounts.where("id").equals(account.id).delete();
             this.accounts = loadData();
         },
 
@@ -267,15 +267,14 @@ function loadData() {
             accounts.push(account);
         });
     }
-    accounts.pop(0);
-    accounts.sort(function(a, b) {
-        console.log('in sort');
-        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-    });
 
-    for (account of accounts) {
-        console.log(account.name);
-    }
+    accounts.pop(0);
+
+    setTimeout(function(){
+        accounts.sort(function(a, b) {
+            return a.name.toString().toLowerCase().localeCompare(b.name.toString().toLowerCase());
+        });
+    }, 200);
 
     return accounts;
 }

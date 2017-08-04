@@ -40,18 +40,18 @@
     <div class="row" id="backup_container">
         <div class="col-xs-12">
             <div class="row">
-                <div class="col-xs-6 col-sm-3">
-                    <button class="btn btn-warning btn-block" v-on:click="openFileChooser()">
+                <div class="col-xs-12">
+                    <button class="btn btn-warning" v-on:click="openFileChooser()">
                         <span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Laden
+                        <input class="_hidden-always" id="backup_file" type="file" v-on:change="applyBackupFile()">
                     </button>
-                    <input class="_hidden-always" id="backup_file" type="file" v-on:change="applyBackupFile()">
-                </div>
-
-                <div class="col-xs-6 col-sm-3" v-if="accounts != null && accounts.length">
-                    <button class="btn btn-info btn-block" v-on:click="createBackupFile()">
+                    <button class="btn btn-info" v-on:click="createBackupFile()">
                         <span class="glyphicon glyphicon-floppy-save"></span> Speichern
+                        <a id="download_backup_file" download="datei.json"></a>
                     </button>
-                    <a class="btn btn-info _hidden-always" id="download_backup_file" download="datei.json"/>
+                    <button class="btn btn-danger" v-on:click="clearDatabase()">
+                        <span class="glyphicon glyphicon-floppy-remove"></span> Alles löschen
+                    </button>
                 </div>
             </div>
 
