@@ -346,6 +346,12 @@ function setupTextfields() {
             }
         });
     });
+
+    // trigger login on enter press
+    $('#tf_passphrase').keypress(function(e){
+        if(e.keyCode == 13)
+            $('.btn-login').click();
+    });
 }
 
 function setupAccountModal() {
